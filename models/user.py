@@ -1,4 +1,5 @@
 from models import Model
+from config import SALT_KEY
 import hashlib
 
 
@@ -17,7 +18,7 @@ class User(Model):
         return names
 
     @staticmethod
-    def salted_password(password, salt='\xa1-\x1f\x01\xd7\x8b\xfa\x0bP\x8fb\xd9\x03O5gy\xc2\xbaS/*(\xdb'):
+    def salted_password(password, salt=SALT_KEY):
         """
         加盐哈希，盐值salt用os.urandom(24)生成
         更安全的做法是给每个用户绑定一个随机的盐值
