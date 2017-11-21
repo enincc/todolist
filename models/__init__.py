@@ -243,3 +243,9 @@ class Model(object):
         _dict = self.__dict__
         d = {k: v for k, v in _dict.items() if k not in self.blacklist()}
         return d
+
+    @classmethod
+    def all_json(cls):
+        ms = cls.all()
+        js = [m.json() for m in ms]
+        return js

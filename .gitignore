@@ -1,9 +1,6 @@
 .idea
 data
 config.py
-.vagrant
-ubuntu-xenial-16.04-cloudimg-console.log
-文档.md
 
 
 # Byte-compiled / optimized / DLL files
