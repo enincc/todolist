@@ -246,6 +246,6 @@ class Model(object):
 
     @classmethod
     def all_json(cls):
-        ms = cls.all()
+        ms = cls.find_all()
         js = [m.json() for m in ms]
         return js

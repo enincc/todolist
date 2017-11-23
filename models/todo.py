@@ -7,17 +7,17 @@ class Todo(Model):
     def valid_names(cls):
         names = super().valid_names()
         names = names + [
-            'task',
-            'user_id',
+            ('task', str, ''),
+            ('user_id', str, ''),
         ]
         return names
 
     @classmethod
-    def update(cls, id, form):
-        m = super().update(id, form)
-        m.updated_time = int(time.time())
-        m.save()
-        return m
+    def update_date(cls, t_id, form):
+        t = cls.find_by(id=t_id)
+        t.task = form.get('task')
+        t.update()
+        return t
 
-    def is_owner(self, id):
-        return self.user_id == id
+    def is_owner(self, u_id):
+        return self.user_id == u_id
