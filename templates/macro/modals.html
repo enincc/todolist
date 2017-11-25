@@ -1,0 +1,21 @@
+{%- macro model(title='', id='', size=1) %}
+    <div class="modal fade" id={{ id }} tabindex="-1">
+        {% set sizes = ['modal-sm', '', 'modal-lg'] %}
+        <div class="modal-dialog {{ sizes[size] }}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">{{ title }}</h4>
+                </div>
+                <div class="modal-body">
+                   {{ caller() }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro -%}

@@ -1,0 +1,25 @@
+{%- macro form() %}
+    <form class="form-horizontal"">
+    <fieldset>
+        {{ caller() }}
+    </fieldset>
+    </form>
+{% endmacro -%}
+
+{%- macro input(label='', name='', placeholder='', type='text', value='', readonly='', place='2', size='10') %}
+    <div class="form-group">
+        <label class="col-sm-{{ place }} control-label">{{ label }}</label>
+        <div class="col-sm-{{ size }}">
+            <input class="form-control" name="{{ name }}" placeholder="{{ placeholder }}" type="{{ type }}" value="{{ value }}" {{ readonly }}>
+        </div>
+    </div>
+{% endmacro -%}
+
+{%- macro textarea(label='', name='', placeholder='', value='', place='2', size='10', rows='6') %}
+    <div class="form-group">
+      <label class="col-sm-{{ place }} control-label">{{ label }}</label>
+      <div class="col-sm-{{ size }}">
+        <textarea class="form-control" rows="{{ rows }}" name="{{ name }}" placeholder="{{ placeholder }}" >{{ value }}</textarea>
+      </div>
+    </div>
+{% endmacro -%}

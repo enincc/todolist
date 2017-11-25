@@ -1,0 +1,9 @@
+#todo-list .col-sm-3 {
+    padding: 6px;
+}
+#todo-list .panel {
+    margin-bottom: 0;
+}
+#todo-list .panel-body {
+    overflow-y: auto;
+}
