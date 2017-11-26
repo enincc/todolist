@@ -2,25 +2,31 @@
 // 用 ajax 请求后端 api
 // 
 // 获取所有 todo
-var apiTodoAll = function(callback) {
+var apiTodoAll = function (callback) {
     var path = '/api/all'
     ajax('GET', path, '', callback)
 }
 
+// 用 id 获取单个 todo
+var apiTodoOne = function (id, callback) {
+    var path = '/api/' + id
+    ajax('GET', path, '', callback)
+}
+
 // 增加一个 todo
-var apiTodoAdd = function(form, callback) {
+var apiTodoAdd = function (form, callback) {
     var path = '/api/add'
     ajax('POST', path, form, callback)
 }
 
 // 删除一个 todo
-var apiTodoDelete = function(id, callback) {
+var apiTodoDelete = function (id, callback) {
     var path = '/api/delete?id=' + id
     ajax('GET', path, '', callback)
 }
 
 // 修改一个 todo
-var apiTodoUpdate = function(form, callback) {
+var apiTodoUpdate = function (form, callback) {
     var path = '/api/update'
     ajax('POST', path, form, callback)
 }
@@ -30,7 +36,7 @@ var apiTodoUpdate = function(form, callback) {
 // 返回用于创建 DOM 节点的 HTML 字符串
 // 
 // TODO DOM
-var todoTemplate = function(todo) {
+var todoTemplate = function (todo) {
     var title = todo.title
     var content = todo.content
     var id = todo.id
@@ -50,7 +56,7 @@ var todoTemplate = function(todo) {
         <div class="panel panel-default">
             <div class="panel-heading">
                 <span class="pull-right">
-                    <a href="###"><span class="glyphicon glyphicon-edit text-muted todo-edit" data-id="${id}" title="编辑"></span></a>
+                    <a href="###"><span class="glyphicon glyphicon-edit text-muted todo-edit" data-id="${id}" title="编辑" data-toggle="modal" data-target="#id-modal-edit"></span></a>
                     <a href="###"><span class="glyphicon glyphicon-trash text-muted todo-delete" data-id="${id}" title="删除"></span></a>
                 </span>
                 ${title}
@@ -64,7 +70,7 @@ var todoTemplate = function(todo) {
     return tt
 }
 
-var todoUpdateFormTemplate = function(todo) {
+var todoUpdateFormTemplate = function (todo) {
     var t = `
       <div class="todo-update-form">
         <input class="todo-update-input">
@@ -78,7 +84,7 @@ var todoUpdateFormTemplate = function(todo) {
 // ------------------------- DOM 节点操作 -------------------------
 // 
 // 插入一个新的 todo
-var insertTodo = function(todo) {
+var insertTodo = function (todo) {
     var todoCell = todoTemplate(todo)
     // 插入 todo-list
     var todoList = e('#todo-list')
@@ -86,13 +92,13 @@ var insertTodo = function(todo) {
 }
 
 // 载入全部 todo
-var loadTodos = function() {
+var loadTodos = function () {
     // 调用 ajax api 来载入数据
-    apiTodoAll(function(r) {
+    apiTodoAll(function (r) {
         // 解析为 数组
         var todos = JSON.parse(r)
         // 循环添加到页面中
-        for(var i = 0; i < todos.length; i++) {
+        for (var i = 0; i < todos.length; i++) {
             var todo = todos[i]
             insertTodo(todo)
         }
@@ -102,16 +108,16 @@ var loadTodos = function() {
 
 // ------------------------- 绑定事件 -------------------------
 // 
-var bindEventTodoAdd = function() {
+var bindEventTodoAdd = function () {
     var b = e('#id-button-add')
-    b.addEventListener('click', function() {
+    b.addEventListener('click', function () {
         var f = e('#id-modal-add form')
         var form = {
             title: f.title.value,
             content: f.content.value,
         }
         f.reset()
-        apiTodoAdd(form, function(r) {
+        apiTodoAdd(form, function (r) {
             // 收到返回的数据, 插入到页面中
             var todo = JSON.parse(r)
             insertTodo(todo)
@@ -119,9 +125,9 @@ var bindEventTodoAdd = function() {
     })
 }
 
-var bindEventTodoDelete = function() {
+var bindEventTodoDelete = function () {
     var todoList = e('#todo-list')
-    todoList.addEventListener('click', function(event) {
+    todoList.addEventListener('click', function (event) {
         // 通过 event.target 得到被点击的对象
         var self = event.target
         // 通过比较被点击元素的 class 判断元素是否我们想要的
@@ -129,67 +135,58 @@ var bindEventTodoDelete = function() {
         if (self.classList.contains('todo-delete')) {
             // log('点击 删除按钮')
             var todoId = self.dataset.id
-            apiTodoDelete(todoId, function(r) {
+            apiTodoDelete(todoId, function (r) {
                 // log('服务器响应删除成功', r)
                 // 收到返回的数据, 删除 self 所在的 todo-cell 节点
-                e(`.todo-cell[data-id="${todoId}"]`).remove()
+                self.closest('.todo-cell').remove()
             })
         }
     })
 
 }
 
-var bindEventTodoEdit = function() {
+var bindEventTodoEdit = function () {
     var todoList = e('#todo-list')
-    log(todoList)
-    todoList.addEventListener('click', function(event){
-        log(event)
+    todoList.addEventListener('click', function (event) {
         var self = event.target
-        log(self.classList)
         if (self.classList.contains('todo-edit')) {
-            var t = todoUpdateFormTemplate()
-            self.parentElement.insertAdjacentHTML('beforeend', t)
+            var todoId = self.dataset.id
+            apiTodoOne(todoId, function (r) {
+                var todo = JSON.parse(r)
+                var form = e('#id-modal-edit')
+                form.querySelector('input').value = todo.title
+                form.querySelector('textarea').value = todo.content
+            })
         }
     })
 }
 
-var bindEventTodoUpdate = function() {
-    var todoList = e('#todo-list')
-    log(todoList)
-    todoList.addEventListener('click', function(event){
-        log(event)
-        var self = event.target
-
-        if (self.classList.contains('todo-update')) {
-          var todoCell = self.closest('.todo-cell')
-          var input = todoCell.querySelector('.todo-update-input')
-          var id = todoCell.dataset.id
-          var form = {
-            id: id,
-            task: input.value,
-          }
-          log('update form', form)
-          apiTodoUpdate(form, function(r) {
-              log('update', r)
-              var updateForm = todoCell.querySelector('.todo-update-form')
-              updateForm.remove()
-
-              var todo = JSON.parse(r)
-              var task = todoCell.querySelector('.todo-task')
-              task.innerHTML = todo.task
-          })
-      }
+var bindEventTodoUpdate = function () {
+    var b = e('#id-button-update')
+    b.addEventListener('click', function () {
+        var f = e('#id-modal-edit form')
+        var form = {
+            id: f.id.value,
+            title: f.title.value,
+            content: f.content.value,
+        }
+        f.reset()
+        apiTodoUpdate(form, function (r) {
+            var todo = JSON.parse(r)
+            var task = todoCell.querySelector('.todo-task')
+            task.innerHTML = todo.task
+        })
     })
 }
 
-var bindEvents = function() {
+var bindEvents = function () {
     bindEventTodoAdd()
     bindEventTodoDelete()
-    // bindEventTodoEdit()
+    bindEventTodoEdit()
     // bindEventTodoUpdate()
 }
 
-var __main = function() {
+var __main = function () {
     bindEvents()
     loadTodos()
 }

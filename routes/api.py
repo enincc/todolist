@@ -15,6 +15,13 @@ def all():
     return jsonify(ts)
 
 
+@main.route('/<int:t_id>', methods=['GET'])
+def one(t_id):
+    # 返回单个 todo
+    t = Todo.find_by(id=t_id)
+    return jsonify(t.json())
+
+
 @main.route('/add', methods=['POST'])
 def add():
     # 获取浏览器请求附带的表单, 浏览器用 ajax 发送 json 格式的数据过来

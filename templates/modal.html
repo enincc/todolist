@@ -16,7 +16,14 @@
     {% endcall %}
 {% endcall %}
 
-{% call modals.modal(title='登录', id='id-modal-add', button_id='id-button-add', size=1) %}
+{% call modals.modal(title='新建 ToDo', id='id-modal-add', button_id='id-button-add', size=1) %}
+    {% call forms.form() %}
+        {{ forms.input(label='标题', name='title', placeholder='title') }}
+        {{ forms.textarea(label='正文', name='content', placeholder='正文支持 Markdown 语法') }}
+    {% endcall %}
+{% endcall %}
+
+{% call modals.modal(title='编辑 ToDo', id='id-modal-edit', button_id='id-button-update', size=1) %}
     {% call forms.form() %}
         {{ forms.input(label='标题', name='title', placeholder='title') }}
         {{ forms.textarea(label='正文', name='content', placeholder='正文支持 Markdown 语法') }}
