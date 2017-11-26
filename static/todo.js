@@ -31,7 +31,8 @@ var apiTodoUpdate = function(form, callback) {
 // 
 // TODO DOM
 var todoTemplate = function(todo) {
-    var task = todo.task
+    var title = todo.title
+    var content = todo.content
     var id = todo.id
     var updated_time = timeString(todo.updated_time)
     // data-* 是 HTML5 自定义标签属性
@@ -40,11 +41,27 @@ var todoTemplate = function(todo) {
         <div class="todo-cell" data-id="${id}">
             <button class="todo-edit" data-id="${id}">编辑</button>
             <button class="todo-delete" data-id="${id}">删除</button>
-            <span class="todo-task">${task}</span>
+            <span class="todo-task">${content}</span>
             <span>${updated_time}</span>
         </div>
     `
-    return t
+    var tt = `
+        <div class="col-sm-3 todo-cell" data-id="${id}">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="pull-right">
+                    <a href="###"><span class="glyphicon glyphicon-edit text-muted todo-edit" data-id="${id}" title="编辑"></span></a>
+                    <a href="###"><span class="glyphicon glyphicon-trash text-muted todo-delete" data-id="${id}" title="删除"></span></a>
+                </span>
+                ${title}
+            </div>
+            <div class="panel-body" style="height: 263px;">
+                <span>${updated_time}</span>
+                <div class="markdown-text markdown-body">${content}</div>
+            </div></div>
+        </div>
+    `
+    return tt
 }
 
 var todoUpdateFormTemplate = function(todo) {
@@ -72,7 +89,6 @@ var insertTodo = function(todo) {
 var loadTodos = function() {
     // 调用 ajax api 来载入数据
     apiTodoAll(function(r) {
-        console.log('load all', r)
         // 解析为 数组
         var todos = JSON.parse(r)
         // 循环添加到页面中
@@ -88,13 +104,13 @@ var loadTodos = function() {
 // 
 var bindEventTodoAdd = function() {
     var b = e('#id-button-add')
-    b.addEventListener('click', function(){
-        var input = e('#id-input-todo')
-        var task = input.value
-        log('click add', task)
+    b.addEventListener('click', function() {
+        var f = e('#id-modal-add form')
         var form = {
-            task: task,
+            title: f.title.value,
+            content: f.content.value,
         }
+        f.reset()
         apiTodoAdd(form, function(r) {
             // 收到返回的数据, 插入到页面中
             var todo = JSON.parse(r)
@@ -105,24 +121,21 @@ var bindEventTodoAdd = function() {
 
 var bindEventTodoDelete = function() {
     var todoList = e('#todo-list')
-    log(todoList)
-    todoList.addEventListener('click', function(event){
-        log(event)
+    todoList.addEventListener('click', function(event) {
         // 通过 event.target 得到被点击的对象
         var self = event.target
         // 通过比较被点击元素的 class 判断元素是否我们想要的
         // classList 属性保存了元素所有的 class
-        log(self.classList)
         if (self.classList.contains('todo-delete')) {
-            log('点击 删除按钮')
+            // log('点击 删除按钮')
             var todoId = self.dataset.id
             apiTodoDelete(todoId, function(r) {
-                log('服务器响应删除成功', r)
-                // 收到返回的数据, 删除 self 的父节点
-                self.parentElement.remove()
+                // log('服务器响应删除成功', r)
+                // 收到返回的数据, 删除 self 所在的 todo-cell 节点
+                e(`.todo-cell[data-id="${todoId}"]`).remove()
             })
-          }
-      })
+        }
+    })
 
 }
 
@@ -172,8 +185,8 @@ var bindEventTodoUpdate = function() {
 var bindEvents = function() {
     bindEventTodoAdd()
     bindEventTodoDelete()
-    bindEventTodoEdit()
-    bindEventTodoUpdate()
+    // bindEventTodoEdit()
+    // bindEventTodoUpdate()
 }
 
 var __main = function() {

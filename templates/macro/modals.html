@@ -1,4 +1,4 @@
-{%- macro model(title='', id='', size=1) %}
+{%- macro modal(title='', id='', button_id='', size=1) %}
     <div class="modal fade" id={{ id }} tabindex="-1">
         {% set sizes = ['modal-sm', '', 'modal-lg'] %}
         <div class="modal-dialog {{ sizes[size] }}">
@@ -13,7 +13,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">提交</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id={{ button_id }}>提交</button>
                 </div>
             </div>
         </div>

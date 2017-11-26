@@ -1,4 +1,4 @@
-#todo-list .col-sm-3 {
+#todo-list .todo-cell {
     padding: 6px;
 }
 #todo-list .panel {
@@ -6,4 +6,9 @@
 }
 #todo-list .panel-body {
     overflow-y: auto;
+}
+.todo-cell .panel-heading {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

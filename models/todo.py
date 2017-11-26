@@ -7,7 +7,8 @@ class Todo(Model):
     def valid_names(cls):
         names = super().valid_names()
         names = names + [
-            ('task', str, ''),
+            ('title', str, ''),
+            ('content', str, ''),
             ('user_id', str, ''),
         ]
         return names

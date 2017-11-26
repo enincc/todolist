@@ -10,18 +10,7 @@
 </head>
 <body>
     {% include 'navbar.html' %}
-    <div class="container" id="todo-list">
-        <div class="col-sm-3">
-            <div class="panel panel-default">
-                <div class="panel-heading">Panel heading</div>
-                <div class="panel-body" style="height: 263px;">
-                    <div class="markdown-text markdown-body"></div>
-                </div></div>
-        </div>
-
-
-
-    </div>
+    <div class="container" id="todo-list"></div>
     {% include 'modal.html' %}
     <script src='{{url_for('static', filename='utils.js')}}'></script>
     <script src='{{url_for('static', filename='todo.js')}}'></script>

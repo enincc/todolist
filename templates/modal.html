@@ -1,7 +1,7 @@
 {% import 'macro/modals.html' as modals %}
 {% import 'macro/forms.html' as forms %}
 
-{% call modals.model(title='注册', id='id-register', size=1) %}
+{% call modals.modal(title='注册', id='id-modal-register', button_id='id-button-register', size=1) %}
     {% call forms.form() %}
         {{ forms.input(label='用户名', name='username', placeholder='username', place='4', size='5') }}
         {{ forms.input(label='密码', name='password', placeholder='password', type='password', place='4', size='5') }}
@@ -9,14 +9,14 @@
     {% endcall %}
 {% endcall %}
 
-{% call modals.model(title='登录', id='id-login', size=1) %}
+{% call modals.modal(title='登录', id='id-modal-login', button_id='id-button-login', size=1) %}
     {% call forms.form() %}
         {{ forms.input(label='用户名', name='username', placeholder='username', place='4', size='5') }}
         {{ forms.input(label='密码', name='password', placeholder='password', type='password', place='4', size='5') }}
     {% endcall %}
 {% endcall %}
 
-{% call modals.model(title='登录', id='id-add-todo', size=1) %}
+{% call modals.modal(title='登录', id='id-modal-add', button_id='id-button-add', size=1) %}
     {% call forms.form() %}
         {{ forms.input(label='标题', name='title', placeholder='title') }}
         {{ forms.textarea(label='正文', name='content', placeholder='正文支持 Markdown 语法') }}
