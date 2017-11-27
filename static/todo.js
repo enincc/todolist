@@ -38,7 +38,7 @@ var apiTodoUpdate = function (form, callback) {
 // TODO DOM
 var todoTemplate = function (todo) {
     var title = todo.title
-    var content = todo.content
+    var content = marked(todo.content)
     var id = todo.id
     var updated_time = timeString(todo.updated_time)
     // data-* 是 HTML5 自定义标签属性
@@ -53,21 +53,14 @@ var todoTemplate = function (todo) {
                 </span>
                 ${title}
             </div>
-            <div class="panel-body" style="height: 263px;">
-                <span>${updated_time}</span>
-                <div class="markdown-text markdown-body">${content}</div>
+            <div class="panel-body">
+                <small class="text-muted"><div class="todo-info">
+                    <span class="pull-right">分类：</span>
+                    <span>${updated_time}</span></div>
+                </small>
+                <div class="markdown-body">${content}</div>
             </div></div>
         </div>
-    `
-    return t
-}
-
-var todoUpdateFormTemplate = function (todo) {
-    var t = `
-      <div class="todo-update-form">
-        <input class="todo-update-input">
-        <button class="todo-update">更新</button>
-      </div>
     `
     return t
 }
