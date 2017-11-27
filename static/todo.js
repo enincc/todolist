@@ -44,14 +44,6 @@ var todoTemplate = function (todo) {
     // data-* 是 HTML5 自定义标签属性
     // 若 data-id="1"，获取属性的方式是 .dataset.id
     var t = `
-        <div class="todo-cell" data-id="${id}">
-            <button class="todo-edit" data-id="${id}">编辑</button>
-            <button class="todo-delete" data-id="${id}">删除</button>
-            <span class="todo-task">${content}</span>
-            <span>${updated_time}</span>
-        </div>
-    `
-    var tt = `
         <div class="col-sm-3 todo-cell" data-id="${id}">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -67,7 +59,7 @@ var todoTemplate = function (todo) {
             </div></div>
         </div>
     `
-    return tt
+    return t
 }
 
 var todoUpdateFormTemplate = function (todo) {
@@ -89,6 +81,15 @@ var insertTodo = function (todo) {
     // 插入 todo-list
     var todoList = e('#todo-list')
     todoList.insertAdjacentHTML('beforeend', todoCell)
+}
+
+// 替换一个 todo
+var replaceTodo = function (todo) {
+    var newTodoCell = todoTemplate(todo)
+    // 插入 todo-list
+    var oldTodoCell = e(`.todo-cell[data-id="${todo.id}"]`)
+    oldTodoCell.insertAdjacentHTML('afterend', newTodoCell)
+    oldTodoCell.remove()
 }
 
 // 载入全部 todo
@@ -154,7 +155,8 @@ var bindEventTodoEdit = function () {
             apiTodoOne(todoId, function (r) {
                 var todo = JSON.parse(r)
                 var form = e('#id-modal-edit')
-                form.querySelector('input').value = todo.title
+                form.querySelector('input[name="id"]').value = todo.id
+                form.querySelector('input[name="title"]').value = todo.title
                 form.querySelector('textarea').value = todo.content
             })
         }
@@ -173,8 +175,7 @@ var bindEventTodoUpdate = function () {
         f.reset()
         apiTodoUpdate(form, function (r) {
             var todo = JSON.parse(r)
-            var task = todoCell.querySelector('.todo-task')
-            task.innerHTML = todo.task
+            replaceTodo(todo)
         })
     })
 }
@@ -183,7 +184,7 @@ var bindEvents = function () {
     bindEventTodoAdd()
     bindEventTodoDelete()
     bindEventTodoEdit()
-    // bindEventTodoUpdate()
+    bindEventTodoUpdate()
 }
 
 var __main = function () {

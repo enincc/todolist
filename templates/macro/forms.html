@@ -21,3 +21,7 @@
       </div>
     </div>
 {% endmacro -%}
+
+{%- macro hidden_input(name='', value='') %}
+    <input name="{{ name }}" type="hidden" value="{{ value }}">
+{% endmacro -%}

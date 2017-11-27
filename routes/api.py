@@ -44,8 +44,7 @@ def delete():
 @main.route('/update', methods=['POST'])
 def update():
     form = request.get_json()
-    t_id = int(form.get('id'))
-    t = Todo.update_date(t_id, form)
+    t = Todo.update_date(form)
     return jsonify(t.json())
 
 

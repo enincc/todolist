@@ -25,6 +25,7 @@
 
 {% call modals.modal(title='编辑 ToDo', id='id-modal-edit', button_id='id-button-update', size=1) %}
     {% call forms.form() %}
+        {{ forms.hidden_input(name="id") }}
         {{ forms.input(label='标题', name='title', placeholder='title') }}
         {{ forms.textarea(label='正文', name='content', placeholder='正文支持 Markdown 语法') }}
     {% endcall %}

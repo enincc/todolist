@@ -14,9 +14,11 @@ class Todo(Model):
         return names
 
     @classmethod
-    def update_date(cls, t_id, form):
+    def update_date(cls, form):
+        t_id = int(form.get('id'))
         t = cls.find_by(id=t_id)
-        t.task = form.get('task')
+        t.title = form.get('title')
+        t.content = form.get('content')
         t.update()
         return t
 
