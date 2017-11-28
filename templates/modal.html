@@ -1,20 +1,44 @@
 {% import 'macro/modals.html' as modals %}
 {% import 'macro/forms.html' as forms %}
 
-{% call modals.modal(title='注册', id='id-modal-register', button_id='id-button-register', size=1) %}
-    {% call forms.form() %}
-        {{ forms.input(label='用户名', name='username', placeholder='username', place='4', size='5') }}
-        {{ forms.input(label='密码', name='password', placeholder='password', type='password', place='4', size='5') }}
-        {{ forms.input(label='确认密码', name='password2', placeholder='password', type='password', place='4', size='5') }}
+{% if g.user %}
+    {% call modals.modal(title='更改密码', id='id-modal-password', button_id='id-button-password', size=1) %}
+        {% call forms.form() %}
+            {{ forms.input(label='当前密码', name='old_pwd', placeholder='old password', type='password', place='4', size='5') }}
+            {{ forms.input(label='新密码', name='new_pwd', placeholder='new password', type='password', place='4', size='5') }}
+        {% endcall %}
     {% endcall %}
-{% endcall %}
 
-{% call modals.modal(title='登录', id='id-modal-login', button_id='id-button-login', size=1) %}
-    {% call forms.form() %}
-        {{ forms.input(label='用户名', name='username', placeholder='username', place='4', size='5') }}
-        {{ forms.input(label='密码', name='password', placeholder='password', type='password', place='4', size='5') }}
+    {% call modals.modal(title='ToDo 分类', id='id-modal-category', button_id='id-button-category', size=1) %}
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#id-add-category" data-toggle="tab" aria-expanded="true">新增分类</a></li>
+            <li class=""><a href="#id-delete-category" data-toggle="tab" aria-expanded="false">删除分类</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade active in" id="id-add-category">
+                {% call forms.form() %}
+                    {{ forms.input(label='新增分类', name='category', placeholder='category', place='4', size='5') }}
+                {% endcall %}
+            </div>
+            <div class="tab-pane fade" id="id-delete-category">
+            </div>
+        </div>
     {% endcall %}
-{% endcall %}
+{% else %}
+    {% call modals.modal(title='注册', id='id-modal-register', button_id='id-button-register', size=1) %}
+        {% call forms.form() %}
+            {{ forms.input(label='用户名', name='username', placeholder='username', place='4', size='5') }}
+            {{ forms.input(label='密码', name='password', placeholder='password', type='password', place='4', size='5') }}
+        {% endcall %}
+    {% endcall %}
+
+    {% call modals.modal(title='登录', id='id-modal-login', button_id='id-button-login', size=1) %}
+        {% call forms.form() %}
+            {{ forms.input(label='用户名', name='username', placeholder='username', place='4', size='5') }}
+            {{ forms.input(label='密码', name='password', placeholder='password', type='password', place='4', size='5') }}
+        {% endcall %}
+    {% endcall %}
+{% endif %}
 
 {% call modals.modal(title='新建 ToDo', id='id-modal-add', button_id='id-button-add', size=1) %}
     {% call forms.form() %}

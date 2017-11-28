@@ -3,31 +3,31 @@
 // 
 // 获取所有 todo
 var apiTodoAll = function (callback) {
-    var path = '/api/all'
+    var path = '/api/todo/all'
     ajax('GET', path, '', callback)
 }
 
 // 用 id 获取单个 todo
 var apiTodoOne = function (id, callback) {
-    var path = '/api/' + id
+    var path = '/api/todo/' + id
     ajax('GET', path, '', callback)
 }
 
 // 增加一个 todo
 var apiTodoAdd = function (form, callback) {
-    var path = '/api/add'
+    var path = '/api/todo/add'
     ajax('POST', path, form, callback)
 }
 
 // 删除一个 todo
 var apiTodoDelete = function (id, callback) {
-    var path = '/api/delete?id=' + id
+    var path = '/api/todo/delete?id=' + id
     ajax('GET', path, '', callback)
 }
 
 // 修改一个 todo
 var apiTodoUpdate = function (form, callback) {
-    var path = '/api/update'
+    var path = '/api/todo/update'
     ajax('POST', path, form, callback)
 }
 

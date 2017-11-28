@@ -5,7 +5,7 @@ from flask import (
 )
 from models.todo import Todo
 # api 只返回 json 格式的数据
-main = Blueprint('api', __name__)
+main = Blueprint('todo_api', __name__)
 
 
 @main.route('/all', methods=['GET'])

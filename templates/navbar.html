@@ -11,15 +11,35 @@
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">全部 <span
                             class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="">Action</a></li>
+                        {% if g.user %}
+                            {% set categories = g.user.categories %}
+                        {% else %}
+                            {% set categories = ['其他', '生活', '工作', '学习'] %}
+                        {% endif %}
+                        <li><a href="###">全部</a></li>
                         <li class="divider"></li>
-                        <li><a href="">Separated link</a></li>
+                        {% for category in categories %}
+                            <li><a href="###">{{ category }}</a></li>
+                        {% endfor %}
                     </ul>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="###" data-toggle="modal" data-target="#id-modal-register">注册</a></li>
-                <li><a href="###" data-toggle="modal" data-target="#id-modal-login">登录</a></li>
+                {% if g.user %}
+                    <li class="dropdown">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            {{ g.user.username }}<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="###" data-toggle="modal" data-target="#id-modal-category">ToDo 分类</a></li>
+                            <li><a href="###" data-toggle="modal" data-target="#id-modal-password">更改密码</a></li>
+                            <li class="divider"></li>
+                            <li><a href="###" id="id-logout">登出</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li><a href="###" data-toggle="modal" data-target="#id-modal-register">注册</a></li>
+                    <li><a href="###" data-toggle="modal" data-target="#id-modal-login">登录</a></li>
+                {% endif %}
             </ul>
         </div>
     </div>

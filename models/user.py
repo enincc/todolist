@@ -13,6 +13,7 @@ class User(Model):
         names = names + [
             ('username', str, ''),
             ('password', str, ''),
+            ('categories', list, ['其他', '生活', '工作', '学习']),
             ('user_avatar', str, '/static/uploads/default.png'),
         ]
         return names
@@ -56,6 +57,15 @@ class User(Model):
     def update_password(self, form):
         if self.password == self.salted_password(form.get('old_pwd')) and len(form.get('new_pwd')) > 2:
             self.password = self.salted_password(form.get('new_pwd'))
+            self.update()
+            return True
+        else:
+            return False
+
+    def add_category(self, form):
+        category = form.get('category')
+        if category not in self.categories and len(category) > 0:
+            self.categories.append(category)
             self.update()
             return True
         else:

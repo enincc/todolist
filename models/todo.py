@@ -9,7 +9,8 @@ class Todo(Model):
         names = names + [
             ('title', str, ''),
             ('content', str, ''),
-            ('user_id', str, ''),
+            ('user_id', int, 0),
+            ('category', str, ''),
         ]
         return names
 
