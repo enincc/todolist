@@ -33,7 +33,7 @@ var ajax = function(method, path, data, responseCallback) {
         }
     }
     // 把数据转换为 json 格式字符串
-    data = JSON.stringify(data)
+    var data = JSON.stringify(data)
     // 发送请求
     r.send(data)
 }

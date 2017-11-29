@@ -13,7 +13,7 @@ class User(Model):
         names = names + [
             ('username', str, ''),
             ('password', str, ''),
-            ('categories', list, ['其他', '生活', '工作', '学习']),
+            ('categories', list, ['生活', '工作', '学习']),
             ('user_avatar', str, '/static/uploads/default.png'),
         ]
         return names
