@@ -56,7 +56,7 @@ var todoTemplate = function (todo) {
             </div>
             <div class="panel-body">
                 <small class="text-muted"><div class="todo-info">
-                    <span class="pull-right">分类：${category}</span>
+                    <span class="pull-right">分类：<span class="todo-category">${category}</span></span>
                     <span>${updated_time}</span></div>
                 </small>
                 <div class="markdown-body">${content}</div>
@@ -175,11 +175,33 @@ var bindEventTodoUpdate = function () {
     })
 }
 
+// 监听分类选择
+var bindEventTodoFilter = function () {
+    var categoriesMenu = e('#id-dropdown-categories .dropdown-menu')
+    categoriesMenu.addEventListener('click', function (event) {
+        var category = event.target.innerText
+        e('#id-filter-category').innerText = category
+        var todoCells = eAll('.todo-cell')
+        var len = todoCells.length
+        for (var i = 0; i < len; i++) {
+            var todoCell = todoCells[i]
+            var todoCategory = todoCell.querySelector('.todo-category').innerText
+            if (category === '全部' || category === todoCategory) {
+                todoCell.style.display = ''
+            } else {
+                todoCell.style.display = 'none'
+            }
+        }
+    })
+}
+
+
 var bindEvents = function () {
     bindEventTodoAdd()
     bindEventTodoDelete()
     bindEventTodoEdit()
     bindEventTodoUpdate()
+    bindEventTodoFilter()
 }
 
 var __main = function () {
