@@ -1,6 +1,6 @@
 {%- macro form() %}
-    <form class="form-horizontal"">
-        {{ caller() }}
+    <form class="form-horizontal">
+    {{ caller() }}
     </form>
 {% endmacro -%}
 
@@ -8,20 +8,35 @@
     <div class="form-group">
         <label class="col-sm-{{ place }} control-label">{{ label }}</label>
         <div class="col-sm-{{ size }}">
-            <input class="form-control" name="{{ name }}" placeholder="{{ placeholder }}" type="{{ type }}" value="{{ value }}" {{ readonly }}>
+            <input class="form-control" name="{{ name }}" placeholder="{{ placeholder }}" type="{{ type }}"
+                   value="{{ value }}" {{ readonly }}>
         </div>
     </div>
 {% endmacro -%}
 
 {%- macro textarea(label='', name='', placeholder='', value='', place='2', size='10', rows='12') %}
     <div class="form-group">
-      <label class="col-sm-{{ place }} control-label">{{ label }}</label>
-      <div class="col-sm-{{ size }}">
-        <textarea class="form-control" rows="{{ rows }}" name="{{ name }}" placeholder="{{ placeholder }}" >{{ value }}</textarea>
-      </div>
+        <label class="col-sm-{{ place }} control-label">{{ label }}</label>
+        <div class="col-sm-{{ size }}">
+            <textarea class="form-control" rows="{{ rows }}" name="{{ name }}"
+                      placeholder="{{ placeholder }}">{{ value }}</textarea>
+        </div>
     </div>
 {% endmacro -%}
 
 {%- macro hidden_input(name='', value='') %}
     <input name="{{ name }}" type="hidden" value="{{ value }}">
+{% endmacro -%}
+
+{%- macro select(label='', name='', selects=[], place='2', size='10') %}
+    <div class="form-group">
+        <label class="col-sm-{{ place }} control-label">{{ label }}</label>
+        <div class="col-sm-{{ size }}">
+            <select class="form-control" name="{{ name }}">
+                {% for select in selects %}
+                    <option>{{ select }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
 {% endmacro -%}

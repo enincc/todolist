@@ -6,6 +6,10 @@ var e = function(sel) {
     return document.querySelector(sel)
 }
 
+var eAll = function(sel) {
+    return document.querySelectorAll(sel)
+}
+
 var timeString = function(timestamp) {
     var d = new Date(timestamp*1000)
     return d.toLocaleString()

@@ -2,6 +2,12 @@
 {% import 'macro/forms.html' as forms %}
 
 {% if g.user %}
+    {% set categories = g.user.categories %}
+{% else %}
+    {% set categories = ['其他', '生活', '工作', '学习'] %}
+{% endif %}
+
+{% if g.user %}
     {% call modals.modal(title='更改密码', id='id-modal-password', button_id='id-button-password', size=1) %}
         {% call forms.form() %}
             {{ forms.input(label='当前密码', name='old_pwd', placeholder='old password', type='password', place='4', size='5') }}
@@ -21,6 +27,9 @@
                 {% endcall %}
             </div>
             <div class="tab-pane fade" id="id-delete-category">
+                {% call forms.form() %}
+                    {{ forms.select(label='删除分类', name='category', selects=categories, place='4', size='5') }}
+                {% endcall %}
             </div>
         </div>
     {% endcall %}
@@ -43,6 +52,7 @@
 {% call modals.modal(title='新建 ToDo', id='id-modal-add', button_id='id-button-add', size=1) %}
     {% call forms.form() %}
         {{ forms.input(label='标题', name='title', placeholder='title') }}
+        {{ forms.select(label='分类', name='category', selects=categories) }}
         {{ forms.textarea(label='正文', name='content', placeholder='正文支持 Markdown 语法') }}
     {% endcall %}
 {% endcall %}

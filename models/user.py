@@ -71,6 +71,14 @@ class User(Model):
         else:
             return False
 
+    def delete_category(self, form):
+        category = form.get('category')
+        if category in self.categories:
+            self.categories.remove(category)
+            self.update()
+            return True
+        else:
+            return False
 
 
 

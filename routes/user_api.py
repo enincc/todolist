@@ -75,3 +75,21 @@ def add_category():
     else:
         alert = ['warning', '分类添加失败，分类为空或已存在。']
     return jsonify(alert)
+
+
+@main.route('/category/all')
+def all_categories():
+    u = g.user
+    categories = u.categories
+    return jsonify(categories)
+
+
+@main.route('/category/delete', methods=['Post'])
+def delete_category():
+    u = g.user
+    form = request.get_json()
+    if u.delete_category(form):
+        alert = ['success', '分类删除成功。']
+    else:
+        alert = ['warning', '分类不存在。']
+    return jsonify(alert)

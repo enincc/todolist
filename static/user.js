@@ -37,6 +37,18 @@ var apiUserAddCategory = function(form, callback) {
     ajax('POST', path, form, callback)
 }
 
+// 删除分类
+var apiUserDeleteCategory = function(form, callback) {
+    var path = '/api/user/category/delete'
+    ajax('POST', path, form, callback)
+}
+
+// 获取所有分类
+var apiUserAllCategories = function(callback) {
+    var path = '/api/user/category/all'
+    ajax('GET', path, '', callback)
+}
+
 // ------------------------- DOM 节点模板 -------------------------
 // 返回用于创建 DOM 节点的 HTML 字符串
 //
@@ -59,6 +71,38 @@ var insertMessage = function (message) {
     // 插入 todo-list
     var todoList = e('#todo-list')
     todoList.insertAdjacentHTML('afterbegin', messageDiv)
+}
+
+// 插入一条新的 todo 分类
+var insertCategory = function (category) {
+    var categoriesMenu = e('#id-dropdown-categories .dropdown-menu')
+    var c = `<li><a href="###">${category}</a></li>`
+    categoriesMenu.insertAdjacentHTML('beforeend', c)
+
+    var categorySelects = eAll('form select[name="category"]')
+    var o = `<option>${category}</option>`
+    var len = categorySelects.length 
+    for (var i = 0; i < len; i++) {
+        categorySelects[i].insertAdjacentHTML('beforeend', o)
+    }
+}
+
+// 移除一条 todo 分类
+var removeCategory = function (index, category) {
+    var categoryLis = e('#id-dropdown-categories .dropdown-menu').childNodes
+    var len = categoryLis.length
+    for (var i = 2; i < len; i++) {
+        if (categoryLis[i].innerText === category) {
+            categoryLis[i].remove()
+            break
+        }
+    }
+      
+    var categorySelects = eAll('form select[name="category"]')
+    var len = categorySelects.length 
+    for (var i = 0; i < len; i++) {
+        categorySelects[i].remove(index)
+    }
 }
 
 // ------------------------- 绑定事件 -------------------------
@@ -139,9 +183,7 @@ var bindEventUpdatePassword = function() {
 var bindEventCategory = function() {
     var b = e('#id-button-category')
     b.addEventListener('click', function () {
-        log('click')
         var tab = e('#id-modal-category .nav a[aria-expanded="true"]').innerText
-        log(tab)
         if (tab === '新增分类') {
             var f = e('#id-add-category form')
             var form = {
@@ -151,9 +193,26 @@ var bindEventCategory = function() {
             apiUserAddCategory(form, function (r) {
                 var message = JSON.parse(r)               
                 insertMessage(message)
+                if (message[0] === 'success') {
+                    insertCategory(form.category)
+                }
             })
         }
-        
+        if (tab === '删除分类') {
+            var f = e('#id-delete-category form')
+            var form = {
+                category: f.category.value,
+            }
+            var index = f.category.selectedIndex
+            f.reset()
+            apiUserDeleteCategory(form, function (r) {
+                var message = JSON.parse(r)               
+                insertMessage(message)
+                if (message[0] === 'success') {
+                    removeCategory(index, form.category)
+                }
+            })
+        }
     })
 }
 

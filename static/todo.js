@@ -41,6 +41,7 @@ var todoTemplate = function (todo) {
     var content = marked(todo.content)
     var id = todo.id
     var updated_time = timeString(todo.updated_time)
+    var category = todo.category
     // data-* 是 HTML5 自定义标签属性
     // 若 data-id="1"，获取属性的方式是 .dataset.id
     var t = `
@@ -55,7 +56,7 @@ var todoTemplate = function (todo) {
             </div>
             <div class="panel-body">
                 <small class="text-muted"><div class="todo-info">
-                    <span class="pull-right">分类：</span>
+                    <span class="pull-right">分类：${category}</span>
                     <span>${updated_time}</span></div>
                 </small>
                 <div class="markdown-body">${content}</div>
@@ -109,6 +110,7 @@ var bindEventTodoAdd = function () {
         var form = {
             title: f.title.value,
             content: f.content.value,
+            category: f.category.value,
         }
         f.reset()
         apiTodoAdd(form, function (r) {
