@@ -6,7 +6,9 @@ from flask import (
     g,
 )
 import uuid
+from config import FORMS
 from models.user import User
+from models.todo import Todo
 from auth import (
     login_required,
     token_required,
@@ -21,6 +23,8 @@ def register():
     u = User.register(form)
     if u is not None:
         alert = ['success', '注册成功，请登录。']
+        for f in FORMS:
+            Todo.new(f, user_id=u.id)
     else:
         alert = ['warning', '注册失败，用户名可能已被占用，或用户名和密码不合法。']
     return jsonify(alert)

@@ -117,7 +117,7 @@ var bindEventTodoAdd = function () {
             // 收到返回的数据, 插入到页面中
             var todo = JSON.parse(r)
             if (todo[0] === 'warning') {
-                insertMessage(todo)
+                // insertMessage(todo)
                 insertTodo(form)
             } else {
                 insertTodo(todo)
