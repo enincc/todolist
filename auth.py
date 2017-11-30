@@ -1,13 +1,11 @@
 from flask import (
     session,
-    redirect,
-    url_for,
     request,
     g,
-    flash,
-    abort,
+    jsonify,
 )
 from models.user import User
+from models.todo import Todo
 from functools import wraps
 
 
@@ -24,18 +22,36 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if g.user is None:
-            flash('请先登录', 'error')
-            return redirect(url_for('index.login'))
-        return f(*args, **kwargs)
+            return jsonify(['warning', '请先登录'])
+        else:
+            return f(*args, **kwargs)
     return decorated_function
 
 
 def token_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        token = request.values.get('token', None)
+        token = request.headers.get('token', None)
         if token == session.get('token', -1):
             return f(*args, **kwargs)
         else:
-            abort(403)
+            return jsonify(['warning', '403, 需要 Token'])
+    return decorated_function
+
+
+def author_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        models = {
+            'todo_api': Todo,
+        }
+        # 根据蓝图名选择对应的 model
+        model = models.get(request.blueprint)
+        m_id = int(request.values.get('id') or request.get_json().get('id'))
+        m = model.find_by(id=m_id)
+        u = g.user
+        if m.user_id == u.id:
+            return f(*args, **kwargs)
+        else:
+            return jsonify(['warning', '403, 不是创建者'])
     return decorated_function

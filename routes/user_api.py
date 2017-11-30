@@ -7,6 +7,10 @@ from flask import (
 )
 import uuid
 from models.user import User
+from auth import (
+    login_required,
+    token_required,
+)
 
 main = Blueprint('user_api', __name__)
 
@@ -56,6 +60,8 @@ def logged_in():
 
 
 @main.route('/password/update', methods=['Post'])
+@login_required
+@token_required
 def update_password():
     u = g.user
     form = request.get_json()
@@ -67,6 +73,8 @@ def update_password():
 
 
 @main.route('/category/add', methods=['Post'])
+@login_required
+@token_required
 def add_category():
     u = g.user
     form = request.get_json()
@@ -78,6 +86,7 @@ def add_category():
 
 
 @main.route('/category/all')
+@login_required
 def all_categories():
     u = g.user
     categories = u.categories
@@ -85,6 +94,8 @@ def all_categories():
 
 
 @main.route('/category/delete', methods=['Post'])
+@login_required
+@token_required
 def delete_category():
     u = g.user
     form = request.get_json()

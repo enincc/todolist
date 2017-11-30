@@ -25,6 +25,10 @@ var ajax = function(method, path, data, responseCallback) {
     // 设置发送的数据的格式为 application/json
     // 这个不是必须的
     r.setRequestHeader('Content-Type', 'application/json')
+    // 在头部添加 token
+    if (e('meta[name="csrf-token"]')) {
+        r.setRequestHeader('Token', e('meta[name="csrf-token"]').content)
+    }
     // 注册响应函数
     r.onreadystatechange = function() {
         if(r.readyState === 4) {

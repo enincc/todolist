@@ -61,6 +61,7 @@
     {% call forms.form() %}
         {{ forms.hidden_input(name="id") }}
         {{ forms.input(label='标题', name='title', placeholder='title') }}
+        {{ forms.select(label='分类', name='category', selects=categories) }}
         {{ forms.textarea(label='正文', name='content', placeholder='正文支持 Markdown 语法') }}
     {% endcall %}
 {% endcall %}

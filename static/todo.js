@@ -116,7 +116,12 @@ var bindEventTodoAdd = function () {
         apiTodoAdd(form, function (r) {
             // 收到返回的数据, 插入到页面中
             var todo = JSON.parse(r)
-            insertTodo(todo)
+            if (todo[0] === 'warning') {
+                insertMessage(todo)
+                insertTodo(form)
+            } else {
+                insertTodo(todo)
+            }
         })
     })
 }
@@ -152,6 +157,7 @@ var bindEventTodoEdit = function () {
                 var form = e('#id-modal-edit')
                 form.querySelector('input[name="id"]').value = todo.id
                 form.querySelector('input[name="title"]').value = todo.title
+                form.querySelector('select[name="category"]').value = todo.category
                 form.querySelector('textarea').value = todo.content
             })
         }
@@ -166,11 +172,17 @@ var bindEventTodoUpdate = function () {
             id: f.id.value,
             title: f.title.value,
             content: f.content.value,
+            category: f.category.value,
         }
         f.reset()
         apiTodoUpdate(form, function (r) {
             var todo = JSON.parse(r)
-            replaceTodo(todo)
+            if (todo[0] === 'warning') {
+                insertMessage(todo)
+                replaceTodo(form)
+            } else {
+                replaceTodo(todo)
+            }       
         })
     })
 }

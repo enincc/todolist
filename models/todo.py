@@ -19,6 +19,7 @@ class Todo(Model):
         t_id = int(form.get('id'))
         t = cls.find_by(id=t_id)
         t.title = form.get('title')
+        t.category = form.get('category')
         t.content = form.get('content')
         t.update()
         return t

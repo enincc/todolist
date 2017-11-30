@@ -1,3 +1,6 @@
+body {
+  background-color: #e2e2e2;
+}
 #todo-list .todo-cell {
     padding: 6px;
 }

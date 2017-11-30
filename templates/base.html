@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
     <meta charset="UTF-8">
     <title>My ToDo List</title>
     <link href="https://cdn.bootcss.com/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet">
@@ -9,6 +8,9 @@
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdn.bootcss.com/marked/0.3.6/marked.min.js"></script>
     <link href="https://cdn.bootcss.com/github-markdown-css/2.8.0/github-markdown.min.css" rel="stylesheet">
+    {% if g.user %}
+        <meta name="csrf-token" content="{{ session.get('token') }}">
+    {% endif %}
 </head>
 <body>
     {% include 'navbar.html' %}

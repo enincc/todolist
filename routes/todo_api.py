@@ -7,6 +7,12 @@ from flask import (
 from models.todo import Todo
 from models.user import User
 from config import SAMPLE_USER
+from auth import (
+    login_required,
+    token_required,
+    author_required,
+)
+
 # api 只返回 json 格式的数据
 main = Blueprint('todo_api', __name__)
 
@@ -38,6 +44,8 @@ def one(t_id):
 
 
 @main.route('/add', methods=['POST'])
+@login_required
+@token_required
 def add():
     # 获取浏览器请求附带的表单, 浏览器用 ajax 发送 json 格式的数据过来
     # 用 request.get_json 函数获取格式化后的 json 数据
@@ -49,6 +57,9 @@ def add():
 
 
 @main.route('/delete', methods=['GET'])
+@login_required
+@author_required
+@token_required
 def delete():
     t_id = int(request.args.get('id'))
     t = Todo.find_by(id=t_id)
@@ -57,9 +68,11 @@ def delete():
 
 
 @main.route('/update', methods=['POST'])
+@login_required
+@author_required
+@token_required
 def update():
     form = request.get_json()
     t = Todo.update_date(form)
     return jsonify(t.json())
-
 
