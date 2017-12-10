@@ -1,10 +1,11 @@
 import time
 from math import ceil
 from pymongo import MongoClient
+from config import DATABASE_NAME
 
 client = MongoClient()
-# 此处修改数据库名字
-db = client['bbs']
+# 此处设置数据库的名字
+db = client[DATABASE_NAME]
 
 
 def next_id(name):
