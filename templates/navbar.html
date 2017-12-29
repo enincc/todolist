@@ -8,7 +8,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="###" data-toggle="modal" data-target="#id-modal-add">新建 ToDo</a></li>
                 <li class="dropdown" id="id-dropdown-categories">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span id="id-filter-category">全部</span> <span
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span id="id-filter-category">全部 </span><span
                             class="caret"></span></a>
                     <ul class="dropdown-menu">
                         {% if g.user %}
@@ -28,7 +28,7 @@
                 {% if g.user %}
                     <li class="dropdown">
                         <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            {{ g.user.username }}<span class="caret"></span></a>
+                            {{ g.user.username }} <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="###" data-toggle="modal" data-target="#id-modal-category">ToDo 分类</a></li>
                             <li><a href="###" data-toggle="modal" data-target="#id-modal-password">更改密码</a></li>
